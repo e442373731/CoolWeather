@@ -211,6 +211,8 @@ public class ChooseAreaActivity extends Activity {
             queryProvinces();
         }else if(currentLevel == COUNTY_LEVEL){
             queryCities();
+        }else if(currentLevel == PROVINCE_LEVEL){
+            finish();
         }
     }
 }

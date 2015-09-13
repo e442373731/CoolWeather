@@ -34,6 +34,9 @@ public class CoolWeatherDB {
      */
     private CoolWeatherDB(Context context) {
         CoolWeatherOpenHelper helper = new CoolWeatherOpenHelper(context, DB_NAME, null, VERSION);
+        /*
+            create the database and three tables
+         */
         database = helper.getWritableDatabase();
     }
 

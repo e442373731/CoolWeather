@@ -52,7 +52,7 @@ public class ChooseAreaActivity extends Activity {
         super.onCreate(save);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.choose_area);
-        db = db.getInstance(this);
+        db = CoolWeatherDB.getInstance(this);
         showTitle = (TextView) findViewById(R.id.title_text);
         showListView = (ListView) findViewById(R.id.show_list_view);
         adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, datalist);
@@ -177,6 +177,7 @@ public class ChooseAreaActivity extends Activity {
                     @Override
                     public void run() {
                         Toast.makeText(ChooseAreaActivity.this, "load filed....", Toast.LENGTH_SHORT).show();
+                        ChooseAreaActivity.this.finish();
                     }
                 });
             }

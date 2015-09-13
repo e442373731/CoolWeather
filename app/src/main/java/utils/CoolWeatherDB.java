@@ -40,7 +40,7 @@ public class CoolWeatherDB {
         database = helper.getWritableDatabase();
     }
 
-    public synchronized CoolWeatherDB getInstance(Context context) {
+    public synchronized static CoolWeatherDB getInstance(Context context) {
         if (WEATHER_DB == null) {
             WEATHER_DB = new CoolWeatherDB(context);
         }

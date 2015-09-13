@@ -13,11 +13,11 @@ public class ParseDataUtil {
     /**
      * parse province data
      */
-    public synchronized static boolean handleProvincesResponse(CoolWeatherDB db, String response){
-        if(!TextUtils.isEmpty(response)){
+    public synchronized static boolean handleProvincesResponse(CoolWeatherDB db, String response) {
+        if (!TextUtils.isEmpty(response)) {
             String[] allProvinces = response.split(",");
-            if(allProvinces != null && allProvinces.length > 0){
-                for(String p :allProvinces){
+            if (allProvinces != null && allProvinces.length > 0) {
+                for (String p : allProvinces) {
                     Province province = new Province();
                     String[] array = p.split("\\|");
                     province.setProvinceCode(array[0]);
@@ -33,11 +33,11 @@ public class ParseDataUtil {
     /**
      * parse city data
      */
-    public synchronized static boolean handleCityResponse(CoolWeatherDB db,String response,int provinceId){
-        if(!TextUtils.isEmpty(response)){
+    public synchronized static boolean handleCityResponse(CoolWeatherDB db, String response, int provinceId) {
+        if (!TextUtils.isEmpty(response)) {
             String[] allcities = response.split(",");
-            if(allcities != null && allcities.length > 0){
-                for(String c : allcities){
+            if (allcities != null && allcities.length > 0) {
+                for (String c : allcities) {
                     City city = new City();
                     String[] array = c.split("\\|");
                     city.setProvinceId(provinceId);
@@ -54,11 +54,11 @@ public class ParseDataUtil {
     /**
      * parse county data
      */
-    public synchronized static boolean handleCountyResponse(CoolWeatherDB db, String response,int cityId){
-        if(!TextUtils.isEmpty(response)){
+    public synchronized static boolean handleCountyResponse(CoolWeatherDB db, String response, int cityId) {
+        if (!TextUtils.isEmpty(response)) {
             String[] counties = response.split(",");
-            if(counties != null && counties.length > 0){
-                for(String c : counties){
+            if (counties != null && counties.length > 0) {
+                for (String c : counties) {
                     String[] array = c.split("\\|");
                     County county = new County();
                     county.setCityId(cityId);

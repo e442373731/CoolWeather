@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 /**
  * Created by zs on 2015/9/12.
  */
-public class CoolWeatherOpenHelper extends SQLiteOpenHelper{
+public class CoolWeatherOpenHelper extends SQLiteOpenHelper {
     /**
      * create province
      */

@@ -2,8 +2,8 @@ package activity;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
@@ -19,6 +19,7 @@ import java.util.List;
 import model.City;
 import model.County;
 import model.Province;
+import utils.CoolWeatherDB;
 
 /**
  * Created by zs on 2015/9/13.
@@ -28,13 +29,15 @@ public class ChooseAreaActivity extends Activity {
     private static final int CITY_LEVEL = 1;
     private static final int COUNTY_LEVEL = 2;
     private int currentLevel;
+    private Province selectedProvince;
+    private City selectedCity;
 
     private ProgressDialog dialog;
     private TextView showTitle;
     private ListView showListView;
     private ArrayAdapter<String> adapter;
     private List<String> datalist = new ArrayList<>();
-    private SQLiteDatabase db;
+    private CoolWeatherDB db;
 
     private List<Province> provinces;
     private List<City> cities;
@@ -53,18 +56,93 @@ public class ChooseAreaActivity extends Activity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (currentLevel == CITY_LEVEL) {
-
+                    selectedProvince = provinces.get(position);
+                    queryCities();
                 } else if (currentLevel == COUNTY_LEVEL) {
-
+                    selectedCity = cities.get(position);
+                    queryCounties();
                 }
             }
         });
+        queryProvinces();
     }
 
     /**
      * query province and put data into datalist
      */
     private void queryProvinces() {
-        
+        provinces = db.loadProvinces();
+        if(provinces.size() > 0){
+            datalist.clear();
+            for(Province province : provinces ){
+                datalist.add(province.getProvinceName());
+            }
+            adapter.notifyDataSetChanged();
+            showListView.setSelection(0);
+            showTitle.setText("China");
+            currentLevel = PROVINCE_LEVEL;
+        }else{
+            queryFromServer(null,"province");
+        }
+    }
+
+    /**
+     * query city and put data into datalist
+     */
+    private void queryCities(){
+        cities = db.loadCities(selectedProvince.getId());
+        if(cities.size() > 0){
+            datalist.clear();
+            for(City city : cities){
+                datalist.add(city.getCityName());
+            }
+            adapter.notifyDataSetChanged();
+            showListView.setSelection(0);
+            showTitle.setText(selectedProvince.getProvinceName());
+            currentLevel = CITY_LEVEL;
+        }else{
+            queryFromServer(selectedProvince.getProvinceCode(),"city");
+        }
+    }
+
+    /**
+     * query county and put data into datalist
+     */
+    private void queryCounties(){
+        counties = db.loadCounties(selectedCity.getId());
+        if(counties.size() > 0){
+            datalist.clear();
+            for(County county : counties){
+                datalist.add(county.getCountyName());
+            }
+            adapter.notifyDataSetChanged();
+            showListView.setSelection(0);
+            showTitle.setText(selectedCity.getCityName());
+            currentLevel = COUNTY_LEVEL;
+        }else{
+            queryFromServer(selectedCity.getCityCode(),"county");
+        }
+    }
+
+    /**
+     * query form server
+     */
+    private void queryFromServer(final String code,final String type){
+        String address;
+        if(!TextUtils.isEmpty(code)){
+            address = "http://www.weather.com.cn/data/list3/city" + code + ".xml";
+        }else{
+            address = "http://www.weather.com.cn/data/list3/city.xml";
+        }
+        showProgressDialog();
+        //query from web through httpUtil
+
+    }
+
+    /**
+     * init progress dialog
+     */
+    private void showProgressDialog(){
+
     }
 }

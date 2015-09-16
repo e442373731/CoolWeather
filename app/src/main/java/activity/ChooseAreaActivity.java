@@ -1,11 +1,11 @@
 package activity;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.text.TextUtils;
+import android.view.Menu;
 import android.view.View;
-import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -28,7 +28,7 @@ import utils.ParseDataUtil;
 /**
  * Created by zs on 2015/9/13.
  */
-public class ChooseAreaActivity extends Activity {
+public class ChooseAreaActivity extends ActionBarActivity {
     private static final int PROVINCE_LEVEL = 0;
     private static final int CITY_LEVEL = 1;
     private static final int COUNTY_LEVEL = 2;
@@ -50,7 +50,6 @@ public class ChooseAreaActivity extends Activity {
     @Override
     protected void onCreate(Bundle save) {
         super.onCreate(save);
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.choose_area);
         db = CoolWeatherDB.getInstance(this);
         showTitle = (TextView) findViewById(R.id.title_text);
@@ -85,6 +84,7 @@ public class ChooseAreaActivity extends Activity {
             adapter.notifyDataSetChanged();
             showListView.setSelection(0);
             showTitle.setText("China");
+            setTitle("China");
             currentLevel = PROVINCE_LEVEL;
         } else {
             queryFromServer(null, "province");
@@ -104,6 +104,7 @@ public class ChooseAreaActivity extends Activity {
             adapter.notifyDataSetChanged();
             showListView.setSelection(0);
             showTitle.setText(selectedProvince.getProvinceName());
+            setTitle(selectedProvince.getProvinceName());
             currentLevel = CITY_LEVEL;
         } else {
             queryFromServer(selectedProvince.getProvinceCode(), "city");
@@ -123,6 +124,7 @@ public class ChooseAreaActivity extends Activity {
             adapter.notifyDataSetChanged();
             showListView.setSelection(0);
             showTitle.setText(selectedCity.getCityName());
+            setTitle(selectedCity.getCityName());
             currentLevel = COUNTY_LEVEL;
         } else {
             queryFromServer(selectedCity.getCityCode(), "county");
@@ -214,5 +216,11 @@ public class ChooseAreaActivity extends Activity {
         }else if(currentLevel == PROVINCE_LEVEL){
             finish();
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+        getMenuInflater().inflate(R.menu.menu_main,menu);
+        return true;
     }
 }
